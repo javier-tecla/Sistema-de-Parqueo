@@ -27,7 +27,8 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <form action="">
+                    <form action="{{ url('/admin/ajustes/create')}}" method="POST" enctype="multipart/form-data">
+                        @csrf
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="row">
@@ -88,18 +89,18 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="telefono">Teléfono <sup class="text-danger">(*)</sup></label>
+                                            <label for="telefonos">Teléfonos <sup class="text-danger">(*)</sup></label>
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">
                                                         <i class="fas fa-building"></i>
                                                     </span>
                                                 </div>
-                                                <input type="text" class="form-control" name="telefono" id="telefono"
-                                                    value="{{ old('telefono') }}" placeholder="Ej: +54 911 1234567"
+                                                <input type="text" class="form-control" name="telefonos" id="telefonos"
+                                                    value="{{ old('telefonos') }}" placeholder="Ej: +54 911 1234567"
                                                     required>
                                             </div>
-                                            @error('telefono')
+                                            @error('telefonos')
                                                 <small style="color: red">{{ $message }}</small>
                                             @enderror
                                         </div>
