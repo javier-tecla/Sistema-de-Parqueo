@@ -43,7 +43,7 @@
                                                     </span>
                                                 </div>
                                                 <input type="text" class="form-control" name="nombre" id="nombre"
-                                                    value="{{ old('nombre') }}" placeholder="Ej: Sistema Parqueo" required>
+                                                    value="{{ old('nombre', $ajuste->nombre ?? '') }}" placeholder="Ej: Sistema Parqueo" required>
                                             </div>
                                             @error('nombre')
                                                 <small style="color: red">{{ $message }}</small>
@@ -60,7 +60,7 @@
                                                     </span>
                                                 </div>
                                                 <textarea class="form-control" name="descripcion" id="descripcion" rows="1"
-                                                    placeholder="Descripción del negocio..." required>{{ old('descripcion') }}</textarea>
+                                                    placeholder="Descripción del negocio..." required>{{ old('descripcion', $ajuste->descripcion ?? '') }}</textarea>
                                             </div>
                                             @error('descripcion')
                                                 <small style="color: red">{{ $message }}</small>
@@ -79,7 +79,7 @@
                                                     </span>
                                                 </div>
                                                 <input type="text" class="form-control" name="sucursal" id="sucursal"
-                                                    value="{{ old('sucursal') }}" placeholder="Ej: Sucursal Centro"
+                                                    value="{{ old('sucursal', $ajuste->sucursal ?? '') }}" placeholder="Ej: Sucursal Centro"
                                                     required>
                                             </div>
                                             @error('sucursal')
@@ -97,7 +97,7 @@
                                                     </span>
                                                 </div>
                                                 <input type="text" class="form-control" name="telefonos" id="telefonos"
-                                                    value="{{ old('telefonos') }}" placeholder="Ej: +54 911 1234567"
+                                                    value="{{ old('telefonos', $ajuste->telefonos ?? '') }}" placeholder="Ej: +54 911 1234567"
                                                     required>
                                             </div>
                                             @error('telefonos')
@@ -115,7 +115,7 @@
                                                     </span>
                                                 </div>
                                                 <textarea class="form-control" name="direccion" id="direccion" rows="1" placeholder="Dirección completa..."
-                                                    required>{{ old('direccion') }}</textarea>
+                                                    required>{{ old('direccion', $ajuste->direccion ?? '') }}</textarea>
                                             </div>
                                             @error('direccion')
                                                 <small style="color: red">{{ $message }}</small>
@@ -136,7 +136,8 @@
                                                 <select class="form-control" name="divisa" id="divisa" required>
                                                     <option value="" disabled selected>Seleccione moneda...</option>
                                                     @foreach ($divisas as $divisa)
-                                                        <option value="{{ $divisa['symbol'] }}">
+                                                        <option value="{{ $divisa['symbol'] }}"
+                                                            {{ old('divisa',$ajuste->divisa ?? '') == $divisa['symbol'] ? 'selected' : '' }}>
                                                             {{ $divisa['name'] . ' - (' . $divisa['symbol'] . ')' }}
                                                         </option>
                                                     @endforeach
@@ -159,7 +160,7 @@
                                                     </span>
                                                 </div>
                                                 <input type="email" class="form-control" name="correo" id="correo"
-                                                    value="{{ old('correo') }}" placeholder="info@tuempresa.com"
+                                                    value="{{ old('correo', $ajuste->correo ?? '') }}" placeholder="info@tuempresa.com"
                                                     required>
                                             </div>
                                             @error('correo')
@@ -177,7 +178,7 @@
                                                     </span>
                                                 </div>
                                                 <input type="pagina_web" class="form-control" name="pagina_web"
-                                                    id="pagina_web" value="{{ old('pagina_web') }}"
+                                                    id="pagina_web" value="{{ old('pagina_web', $ajuste->pagina_web ?? '') }}"
                                                     placeholder="https://www.tuempresa.com">
                                             </div>
                                             @error('pagina_web')
@@ -191,8 +192,13 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="logo">Logo Principal <sup
-                                                    class="text-danger">(*)</sup></label>
+                                            <label for="logo">Logo Principal 
+                                                @if (!isset($ajuste) || !$ajuste->logo)
+                                                <sup
+                                                    class="text-danger">(*)
+                                                </sup>
+                                                @endif
+                                                </label>
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">
@@ -200,11 +206,17 @@
                                                     </span>
                                                 </div>
                                                 <input type="file" class="form-control" name="logo" id="logo"
-                                                    accept="image/*" onchange="mostrarImagen(event)" required>
+                                                    accept="image/*" onchange="mostrarImagen(event)" @if(!isset($ajuste) || !$ajuste->logo) required @endif>
                                             </div>
                                             <center>
-                                                <img id=preview1 src=""
+                                                 @if (isset($ajuste) && $ajuste->logo)
+                                                    <img id=preview1 src="{{ asset('storage/logos/'.$ajuste->logo)}}"
                                                     style="max-width: 100px; margin-top: 10px;">
+                                                @else
+                                                    <img id=preview1 src=""
+                                                    style="max-width: 100px; margin-top: 10px;">
+                                                @endif
+                                                
                                             </center>
                                             @error('logo')
                                                 <small style="color: red">{{ $message }}</small>
@@ -216,8 +228,13 @@
                                     </script>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="logo_auto">Logo para auto <sup
-                                                    class="text-danger">(*)</sup></label>
+                                            <label for="logo_auto">Logo para auto 
+                                                @if (!isset($ajuste) || !$ajuste->logo_auto)
+                                                <sup
+                                                    class="text-danger">(*)
+                                                </sup>
+                                                @endif
+                                            </label>
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">
@@ -225,12 +242,17 @@
                                                     </span>
                                                 </div>
                                                 <input type="file" class="form-control" name="logo_auto"
-                                                    id="logo_auto" accept="image/*" onchange="mostrarImagen2(event)"
-                                                    required>
+                                                    id="logo_auto" accept="image/*" onchange="mostrarImagen2(event)"@if(!isset($ajuste) || !$ajuste->logo_auto)
+                                                    required @endif>
                                             </div>
                                             <center>
-                                                <img id=preview2 src=""
+                                                @if (isset($ajuste) && $ajuste->logo_auto)
+                                                    <img id=preview2 src="{{ asset('storage/logos/'.$ajuste->logo_auto)}}"
                                                     style="max-width: 100px; margin-top: 10px;">
+                                                @else
+                                                    <img id=preview2 src=""
+                                                    style="max-width: 100px; margin-top: 10px;">
+                                                @endif
                                             </center>
                                             @error('logo_auto')
                                                 <small style="color: red">{{ $message }}</small>

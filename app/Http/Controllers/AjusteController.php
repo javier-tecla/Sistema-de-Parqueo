@@ -15,7 +15,8 @@ class AjusteController extends Controller
     {
         $jsonData = file_get_contents('https://api.hilariweb.com/divisas');
         $divisas = json_decode($jsonData, true);
-        return view('admin.ajustes.index',compact('divisas'));
+        $ajuste = Ajuste::first();
+        return view('admin.ajustes.index',compact('divisas','ajuste'));
     }
 
     /**
@@ -31,8 +32,10 @@ class AjusteController extends Controller
      */
     public function store(Request $request)
     {
+        $ajuste = Ajuste::first();
+
         // return response()->json($request->all());
-        $request->validate([
+        $rules = [
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required|string',
             'sucursal' => 'required|string|max:255',
@@ -43,9 +46,22 @@ class AjusteController extends Controller
             'divisa' => 'required|string|max:10',
             'correo' => 'required|email|max:255',
             'pagina_web' => 'nullable|url|max:255',
-        ]);
+        ];
 
-        $ajuste = Ajuste::first();
+        if(!$ajuste || !$ajuste->logo){
+            $rules['logo'] = 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
+        }else{
+            $rules['logo'] = 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
+        }
+
+        if(!$ajuste || !$ajuste->logo_auto){
+            $rules['logo_auto'] = 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
+        }else{
+            $rules['logo_auto'] = 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
+        }
+
+        $request->validate($rules);
+
         if(!$ajuste){
             $ajuste = new Ajuste();
         }
@@ -61,21 +77,25 @@ class AjusteController extends Controller
 
         // Guardar Logo
         if ($request->hasFile('logo')) {
-            if($ajuste->logo && Storage::exists('public/logos/'.$ajuste->logo)){
-                Storage::delete('public/logos/'.$ajuste->logo);
+            if($ajuste->logo && Storage::disk('public')->exists('logos/'.$ajuste->logo)){
+                Storage::disk('public')->delete('logos/'.$ajuste->logo);
             }
-            $logoPath = $request->file('logo')->store('public/logos','public');
+            $logoPath = $request->file('logo')->store('logos','public');
             $ajuste->logo = basename($logoPath);
         }
         // Guardar Logo_auto
         if ($request->hasFile('logo_auto')) {
-            if($ajuste->logo_auto && Storage::exists('public/logos/'.$ajuste->logo_auto)){
-                Storage::delete('public/logos/'.$ajuste->logo_auto);
+            if($ajuste->logo_auto && Storage::disk('public')->exists('logos/'.$ajuste->logo_auto)){
+                Storage::disk('public')->delete('logos/'.$ajuste->logo_auto);
             }
-            $logoAutoPath = $request->file('logo_auto')->store('public/logos','public');
+            $logoAutoPath = $request->file('logo_auto')->store('logos','public');
             $ajuste->logo_auto = basename($logoAutoPath);
         }
         $ajuste->save();
+
+        return redirect()->back()
+            ->with('mensaje', 'Ajuste guardado correctamente')
+            ->with('icono', 'success');
     }
 
     /**
