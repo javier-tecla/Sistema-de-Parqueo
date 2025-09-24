@@ -43,7 +43,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        @foreach ($roles as $role)
+                                        <tr>
+                                            <td style="text-align: center">{{$loop->iteration}}</td>
+                                            <td>{{$role->name}}</td>
+                                            <td>
+                                                <a href="" class="btn btn-info btn-sm"><i class="fas fa-edit"> Editar</i></a>
+                                                <a href=""></a>
+                                                <a href="" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"> Eliminar</i></a>
+                                                <a href=""></a>
+                                            </td>
+                                        </tr> 
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
