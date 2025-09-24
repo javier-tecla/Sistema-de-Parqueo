@@ -308,6 +308,19 @@ return [
 
         // Sidebar items:
     
+        ['header' => 'Menu'],
+        [
+            'text' => 'Inicio',
+            'url' => 'admin',
+            'icon' => 'fas fa-fw fa-home',
+            'classes' => 'bg-blue text-white',
+        ],
+        [
+            'text' => 'Roles',
+            'url' => 'admin/roles',
+            'icon' => 'fas fa-fw fa-user-shield',
+            'classes' => 'bg-blue text-white',
+        ],
         ['header' => 'Ajustes del sistema'],
         [
             'text' => 'Ajustes',
@@ -315,8 +328,10 @@ return [
             'icon' => 'fas fa-fw fa-cog',
             'classes' => 'bg-blue text-white',
         ],
+        
        
     ],
+    
 
     /*
     |--------------------------------------------------------------------------
