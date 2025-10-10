@@ -52,12 +52,39 @@
                                                     <a href="" class="btn btn-warning btn-sm"><i
                                                             class="fas fa-check">
                                                             Asignar permisos</i></a>
-                                                    <a href="" class="btn btn-success btn-sm"><i class="fas fa-edit">
+                                                    <a href="{{ url('/admin/rol/'.$role->id.'/edit')}}" class="btn btn-success btn-sm"><i class="fas fa-edit">
                                                             Editar</i></a>
-                                                    <a href=""></a>
-                                                    <a href="" class="btn btn-danger btn-sm"><i
-                                                            class="fas fa-trash-alt"> Eliminar</i></a>
-                                                    <a href=""></a>
+                                                    <form action="{{ url('/admin/rol/'.$role->id) }}" method="post"
+                                                        id="miFormulario{{ $role->id }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                                onclick="preguntar{{ $role->id }}(event)">
+                                                                <i class="fas fa-trash"></i>
+                                                                Eliminar
+                                                            </button>
+                                                    </form>
+                                                    <script>
+                                                        function preguntar{{ $role->id }}(event) {
+                                                            event.preventDefault();
+
+                                                            Swal.fire({
+                                                                title: '¿Desea eliminar este registro?',
+                                                                text: '',
+                                                                icon: 'question',
+                                                                showDenyButton: true,
+                                                                confirmButtonText: 'Eliminar',
+                                                                confirmButtonColor: '#ff2c22',
+                                                                denyButtonColor: '#270a0a',
+                                                                denyButtonText: 'Cancelar',
+                                                            }).then((result) => {
+                                                                if (result.isConfirmed) {
+                                                                    // JavaScript puro para enviar el formulario
+                                                                    document.getElementById('miFormulario{{ $role->id }}').submit();
+                                                                }
+                                                            });
+                                                        }
+                                                    </script>
                                                 </td>
                                             </tr>
                                         @endforeach

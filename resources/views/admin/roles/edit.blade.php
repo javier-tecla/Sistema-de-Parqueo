@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Registro de un nuevo rol</h1>
+                <h1 class="m-0">Modificar rol</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -21,15 +21,16 @@
 
     <div class="row">
         <div class="col-md-4">
-            <div class="card card-primary">
+            <div class="card card-success">
                 <div class="card-header">
                     <h3 class="card-title"><b>Llene los campos del formulario</b></h3>
                     <!-- /.card-tools -->
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <form action="{{ url('/admin/roles/create') }}" method="POST">
+                    <form action="{{ url('/admin/rol/'.$role->id) }}" method="POST">
                         @csrf
+                        @method('PUT')
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -41,7 +42,7 @@
                                             </span>
                                         </div>
                                         <input type="text" class="form-control" name="name" id="name"
-                                            value="{{ old('name', $ajuste->nombre ?? '') }}"
+                                            value="{{ old('name', $role->name ?? '') }}"
                                             placeholder="Ej: Colaborador" required>
                                     </div>
                                     @error('name')
@@ -54,7 +55,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <a href="{{url('/admin/roles')}}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
-                                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                                <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Actualizar</button>
                             </div>
                         </div>
                     </form>

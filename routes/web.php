@@ -22,6 +22,9 @@ Route::post('/admin/ajustes/create', [App\Http\Controllers\AjusteController::cla
 Route::get('/admin/roles', [App\Http\Controllers\RolerController::class,'index'])->name('admin.roles.index')->middleware('auth');
 Route::get('/admin/roles/create', [App\Http\Controllers\RolerController::class, 'create'])->name('admin.roles.create')->middleware('auth');
 Route::post('/admin/roles/create', [App\Http\Controllers\RolerController::class, 'store'])->name('admin.roles.store')->middleware('auth');
+Route::get('/admin/rol/{id}/edit', [App\Http\Controllers\RolerController::class, 'edit'])->name('admin.roles.edit')->middleware('auth');
+Route::put('/admin/rol/{id}', [App\Http\Controllers\RolerController::class, 'update'])->name('admin.roles.update')->middleware('auth');
+Route::delete('/admin/rol/{id}', [App\Http\Controllers\RolerController::class, 'destroy'])->name('admin.roles.destroy')->middleware('auth');
 
 
 
